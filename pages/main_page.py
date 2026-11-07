@@ -19,49 +19,13 @@ class MainPage(BasePage):
     @allure.step('Клик по кнопке Крестик в окне информации об ингредиенте')
     def click_to_cross_button(self):
         button = self.wait_load_element(MainPageLocators.CROSS_BUTTON)
-        self.driver.execute_script("arguments[0].click();", button)
+        self.click_to_element_via_js(button)
 
     @allure.step('Перетаскивание ингредиента в поле конструктора')
     def drag_and_drop_ingredient(self, ingredient):
         drag = self.find_element_on_page(ingredient).find_element(By.XPATH, "..")
         drop = self.find_element_on_page(MainPageLocators.DROP_ZONE)
-
-        self.driver.execute_script("""
-            const source = arguments[0];
-            const target = arguments[1];
-
-            const dataTransfer = new DataTransfer();
-            const dragStart = new DragEvent('dragstart', {
-                bubbles: true,
-                cancelable: true,
-                dataTransfer: dataTransfer
-            });
-            source.dispatchEvent(dragStart);
-            const dragEnter = new DragEvent('dragenter', {
-                bubbles: true,
-                cancelable: true,
-                dataTransfer: dataTransfer
-            });
-            target.dispatchEvent(dragEnter);
-            const dragOver = new DragEvent('dragover', {
-                bubbles: true,
-                cancelable: true,
-                dataTransfer: dataTransfer
-            });
-            target.dispatchEvent(dragOver);
-            const dropEvent = new DragEvent('drop', {
-                bubbles: true,
-                cancelable: true,
-                dataTransfer: dataTransfer
-            });
-            target.dispatchEvent(dropEvent);
-            const dragEnd = new DragEvent('dragend', {
-                bubbles: true,
-                cancelable: true,
-                dataTransfer: dataTransfer
-            });
-            source.dispatchEvent(dragEnd);
-        """, drag, drop)
+        self.drag_and_drop_element_via_js(drag, drop)
 
     @allure.step('Клик по кнопке Войти в аккаунт')
     def click_to_enter_the_account_button(self):
@@ -79,7 +43,7 @@ class MainPage(BasePage):
     @allure.step('Закрытие окна Заказ оформлен')
     def close_placed_order_window(self):
         button = self.wait_load_element(MainPageLocators.CROSS_BUTTON_IN_PLACED_ORDER_WINDOW)
-        self.driver.execute_script("arguments[0].click();", button)
+        self.click_to_element_via_js(button)
 
     @allure.step('Добавить в конструктор первую в списке булку, соус и начинку')
     def add_bun_sauce_and_filling(self):
